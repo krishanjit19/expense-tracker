@@ -2,7 +2,6 @@ package com.expensetracker.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,35 +12,30 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private Double amount;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    @Column(nullable = false)
+    private LocalDateTime date;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private AppCredential.AppType appType;
+    @ManyToOne
+    @JoinColumn(name = "app_credential_id")
+    private AppCredential appCredential;
 
-    @Column(nullable = false)
-    private String orderId;
-
-    @Column(nullable = false)
-    private BigDecimal amount;
-
-    @Column
-    private String restaurantName;
-
-    @Column
-    private String items;
-
-    @Column(nullable = false)
-    private LocalDateTime orderDate;
-
-    @Column
-    private String paymentMethod;
-
-    @Column
-    private String status;
-
-    @Column
-    private String notes;
+    public enum Category {
+        FOOD,
+        DELIVERY,
+        OTHER
+    }
 } 
